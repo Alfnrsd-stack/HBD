@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Happy Birthday, My Princess ❤️</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'Plus Jakarta Sans',sans-serif;background:#080205;color:#fff}
+
+/* Premium Dynamic Background */
+.bg-layer{
+  position:fixed;inset:0;
+  background: radial-gradient(circle at 50% 20%, #4a0e2e 0%, #1a0410 50%, #080205 100%);
+  z-index: 1;
+}
+.bg-glow{
+  position:fixed;width:300px;height:300px;border-radius:50%;
+  background:radial-gradient(circle, rgba(255, 77, 141, 0.25) 0%, transparent 70%);
+  filter:blur(40px);z-index:2;pointer-events:none;
+  animation: floatGlow 10s ease-infinite alternate;
+}
+@keyframes floatGlow{0%{transform:translate(-20%, -20%)}100%{transform:translate(80%, 80%)}}
+
+#canvas{position:fixed;inset:0;z-index:3;pointer-events:none}
+
+/* Layout Container */
+.app-shell{position:relative;z-index:4;width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:20px}
+
+/* Ultra Glass Card */
+.card{
+  position:absolute;width:min(100%, 410px);max-height:88vh;padding:32px 26px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+  border-radius: 36px; text-align: center;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+  opacity:0; transform: scale(0.88) translateY(30px); pointer-events:none;
+  transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow-y: auto; scrollbar-width: none;
+}
+.card::-webkit-scrollbar{display:none}
+.card.active{opacity:1; transform: scale(1) translateY(0); pointer-events:all}
+
+/* Progress Tracker */
+.tracker{position:absolute;top:20px;left:0;right:0;display:flex;justify-content:center;gap:6px;z-index:10}
+.step{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.2);transition:0.5s cubic-bezier(0.16, 1, 0.3, 1)}
+.step.active{background:#ff3377;width:22px;border-radius:10px;box-shadow:0 0 12px #ff3377}
+
+/* Typography */
+.tag{
+  display:inline-block;padding:6px 14px;border-radius:30px;
+  background:rgba(255, 51, 119, 0.15);border:1px solid rgba(255, 51, 119, 0.3);
+  color:#ff77a8;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;
+}
+h1{font-size:28px;font-weight:800;line-height:1.2;margin-bottom:10px;background:linear-gradient(135deg, #fff 30%, #ffb3d1);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+p{font-size:14px;line-height:1.7;color:#e2c5d3;font-weight:400;margin-bottom:16px}
+.handwrite{font-family:'Caveat',cursive;font-size:24px;color:#ff99c2;line-height:1.3}
+
+/* Primary Button */
+.btn-main{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  width:100%;padding:16px 24px;border:none;border-radius:20px;
+  background: linear-gradient(135deg, #ff3377, #ff6699);
+  color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:15px;
+  box-shadow:0 12px 30px rgba(255, 51, 119, 0.4);cursor:pointer;
+  transition:all 0.3s cubic-bezier(0.16, 1, 0.3, 1);margin-top:8px;
+}
+.btn-main:active{transform:scale(0.96);box-shadow:0 6px 15px rgba(255, 51, 119, 0.3)}
+.btn-msg{background:linear-gradient(135deg, #25D366, #128C7E);box-shadow:0 12px 30px rgba(37, 211, 102, 0.3)}
+.btn-sub{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);box-shadow:none;margin-top:10px}
+
+/* Music Floating Badge */
+.music-toggle{
+  position:fixed;top:24px;right:24px;z-index:20;width:46px;height:46px;
+  border-radius:50%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.18);
+  color:#fff;font-size:18px;display:flex;align-items:center;justify-content:center;
+  backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);cursor:pointer;transition:0.3s;box-shadow:0 8px 20px rgba(0,0,0,0.3);
+}
+.music-toggle.playing{animation:spin 5s linear infinite;border-color:#ff3377;color:#ff3377}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* GIFT BOX ANIMATION */
+.gift-box-wrap{margin:20px 0;cursor:pointer;perspective:1000px}
+.gift-icon{
+  font-size:85px;display:inline-block;filter:drop-shadow(0 15px 25px rgba(255, 51, 119, 0.5));
+  animation:giftShake 2s infinite cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+@keyframes giftShake{
+  0%,100%{transform:rotate(0deg) scale(1)}
+  15%{transform:rotate(-6deg) scale(1.05)}
+  30%{transform:rotate(6deg) scale(1.05)}
+  45%{transform:rotate(-3deg) scale(1.05)}
+}
+
+/* POLAROID GALLERY */
+.polaroid-frame{
+  background:#fff;padding:12px 12px 25px 12px;border-radius:12px;
+  box-shadow:0 20px 40px rgba(0,0,0,0.6);transform:rotate(-2deg);margin:15px auto;
+  width:100%;max-width:280px;position:relative;transition:0.4s;
+}
+.polaroid-frame:nth-child(even){transform:rotate(3deg)}
+.polaroid-img{width:100%;height:230px;object-fit:cover;border-radius:6px;background:#1a0812}
+.polaroid-caption{color:#333;font-family:'Caveat',cursive;font-size:22px;margin-top:10px;font-weight:700}
+.polaroid-tape{
+  position:absolute;top:-10px;left:50%;transform:translateX(-50%);
+  width:70px;height:20px;background:rgba(255,255,255,0.5);
+  backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);border:1px dashed rgba(0,0,0,0.1);
+}
+
+/* VIDEO STYLES */
+.video-wrap{
+  width:100%;border-radius:18px;overflow:hidden;margin:15px 0;
+  border:1px solid rgba(255,255,255,0.15);box-shadow:0 15px 35px rgba(0,0,0,0.5);
+  background:#000;
+}
+.video-wrap video{width:100%;height:auto;max-height:280px;display:block;border-radius:18px}
+
+/* INTERACTIVE CAKE & FLAME */
+.cake-stage{position:relative;width:140px;height:140px;margin:20px auto;cursor:pointer}
+.cake-emoji{font-size:100px;position:absolute;bottom:0;left:50%;transform:translateX(-50%)}
+.flame-element{
+  position:absolute;top:-5px;left:50%;transform:translateX(-50%);
+  font-size:32px;filter:drop-shadow(0 0 10px #ff9900);
+  animation:candleBurn 0.4s infinite alternate;transition:all 0.6s ease;
+}
+@keyframes candleBurn{0%{transform:translateX(-50%) scale(0.9) rotate(-2deg)}100%{transform:translateX(-50%) scale(1.1) rotate(2deg)}}
+.flame-element.out{opacity:0;transform:translateX(-50%) translateY(-25px) scale(0)}
+
+/* MIC DETECTOR BADGE */
+.mic-badge{
+  display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:20px;
+  background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);
+  font-size:11px;color:#ff99c2;margin-top:10px;
+}
+.mic-dot{width:8px;height:8px;border-radius:50%;background:#ff3377;animation:blink 1s infinite}
+@keyframes blink{50%{opacity:0.3}}
+
+/* QUIZ STYLES */
+.quiz-grid{display:flex;flex-direction:column;gap:12px;margin:15px 0}
+.quiz-btn{
+  padding:16px 20px;border-radius:18px;background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.12);color:#fff;text-align:left;
+  font-size:14px;font-weight:500;cursor:pointer;transition:0.3s;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.quiz-btn:active{background:rgba(255, 51, 119, 0.2);border-color:#ff3377}
+</style>
+</head>
+<body>
+
+<div class="bg-layer"></div>
+<div class="bg-glow"></div>
+<canvas id="canvas"></canvas>
+
+<!-- MUSIK BACKGROUND -->
+<audio id="music" loop preload="auto">
+  <source src="MusikM.mp3" type="audio/mpeg">
+</audio>
+
+<button class="music-toggle" id="musicBtn" onclick="toggleAudio()">🎵</button>
+
+<div class="app-shell">
+
+  <!-- TRACKER STEPS (7 SLIDE) -->
+  <div class="tracker">
+    <div class="step active"></div>
+    <div class="step"></div>
+    <div class="step"></div>
+    <div class="step"></div>
+    <div class="step"></div>
+    <div class="step"></div>
+    <div class="step"></div>
+  </div>
+
+  <!-- SLIDE 1: GIFT OPENING -->
+  <div class="card active" id="s1">
+    <div class="tag">Special Delivery 📦</div>
+    <h1>Her Spesial Day!</h1>
+    <p>Sebuah kejutan manis dikirimkan khusus untuk merayakan hari paling istimewa dalam hidupmu.</p>
+    <div class="gift-box-wrap" onclick="startSurprise()">
+      <div class="gift-icon">🎁</div>
+    </div>
+    <p style="font-size:12px;opacity:0.6">Ketuk kadonya untuk membuka ✨</p>
+  </div>
+
+  <!-- SLIDE 2: WELCOME & SWEET WORDS -->
+  <div class="card" id="s2">
+    <div class="tag">Happy Birthday</div>
+    <h1>Hai, <span style="color:#ff6699">Sayangku!</span> ❤️</h1>
+    <p>Hari ini semesta sedang tersenyum merayakan hadirnya sosok yang paling indah dalam hidupku.</p>
+    <p class="handwrite">"Tidak ada kata-kata yang bisa aku gunakan untuk menggambarkan cinta yang kamu bagikan. Aku sangat berterima kasih karena keberadaanmu. Selamat ulang tahun Sayangku cintaku!"</p>
+    <p>Sebelum lanjut ke kado berikutnya, jawab tebakan ini dulu yuk...</p>
+    <button class="btn-main" onclick="nav(3)">Mulai Kuis ➔</button>
+  </div>
+
+  <!-- SLIDE 3: INTERACTIVE QUIZ -->
+  <div class="card" id="s3">
+    <div class="tag">Kuis Singkat</div>
+    <h2 style="font-size:20px;margin-bottom:12px">Siapa orang paling cantik & berharga hari ini? 👑</h2>
+    <div class="quiz-grid">
+      <div class="quiz-btn" onclick="checkQuiz(true)"><span>A. Titan Salvaura Ramadani</span> <span>🥰</span></div>
+      <div class="quiz-btn" onclick="checkQuiz(false)"><span>B. Aisyah Zahra</span> <span>😜</span></div>
+      <div class="quiz-btn" onclick="checkQuiz(false)"><span>C. Aurelia</span> <span>🐱</span></div>
+    </div>
+    <p id="quizStatus" style="min-height:20px;font-weight:600;color:#ff6699"></p>
+  </div>
+
+  <!-- SLIDE 4: POLAROID GALLERY -->
+  <div class="card" id="s4">
+    <div class="tag">Sweet Memories 📸</div>
+    <div class="polaroid-frame">
+      <div class="polaroid-tape"></div>
+      <!-- GANTI 'foto.jpg' DENGAN NAMA FOTO KAMU -->
+      <img class="polaroid-img" src="IMG-02.jpg" alt="Foto">
+      <div class="polaroid-caption">Senyum Favoritku ❤️</div>
+    </div>
+    <p class="handwrite">"Di antara jutaan bintang, senyumanmu tetap jadi yang paling terang."</p>
+    <button class="btn-main" onclick="nav(5)">Lanjut ke Lilin 🎂</button>
+  </div>
+
+  <!-- SLIDE 5: CANDLE BLOW -->
+  <div class="card" id="s5">
+    <div class="tag">Make A Wish 🕯️</div>
+    <h2 style="font-size:22px">Saatnya Tiup Lilin!</h2>
+    <p>Tutup mata sejenak, panjatkan doa terbaikmu, lalu **tiup ke mikrofon HP-mu** (atau ketuk kue):</p>
+    
+    <div class="cake-stage" onclick="extinguishCandle()">
+      <div class="flame-element" id="candleFlame">🔥</div>
+      <div class="cake-emoji">🎂</div>
+    </div>
+
+    <div class="mic-badge" id="micStatus">
+      <div class="mic-dot"></div> Fitur tiup mic aktif (atau klik kue)
+    </div>
+
+    <p id="wishMsg" style="opacity:0;transition:0.5s;color:#ff6699;font-weight:700;margin-top:15px">Semoga Semua Doamu Dikabulkan! ✨</p>
+    <button class="btn-main" id="btnToFinal" style="display:none;" onclick="nav(6)">Lihat Video Spesial 🎬</button>
+  </div>
+
+  <!-- SLIDE 6: SPECIAL VIDEO SLIDE -->
+  <div class="card" id="s6">
+    <div class="tag">Special Video 🎬</div>
+    <h2 style="font-size:22px">Momen Spesial Untukmu</h2>
+    <p>Sebuah kenangan manis yang diabadikan khusus untuk merayakan hari bahagiamu.</p>
+    
+    <div class="video-wrap">
+      <!-- GANTI 'video.mp4' DENGAN NAMA FILE VIDEO KAMU -->
+      <video id="birthdayVideo" controls playsinline poster="">
+        <source src="video.mp4" type="video/mp4">
+        Browser kamu tidak mendukung pemutaran video.
+      </video>
+    </div>
+
+    <p class="handwrite">"Setiap detik bersamamu adalah kenangan yang selalu ingin aku simpan."</p>
+    <button class="btn-main" onclick="nav(7)">Buka Surat Terakhir 💌</button>
+  </div>
+
+  <!-- SLIDE 7: FINAL LETTER & SEND MESSAGE -->
+  <div class="card" id="s7">
+    <div style="font-size:55px;margin-bottom:10px">💖</div>
+    <div class="tag">Selamat Ulang Tahun!</div>
+    <h1>Untuk Orang Tersayang</h1>
+    <p>Selamat ulang tahun, sayang! Semoga di usiamu saat ini, langkahmu semakin dimudahkan, hatimu makin dipenuhi kedamaian, dan bahagia selalu menyertaimu setiap hari.</p>
+    <p class="handwrite" style="margin-bottom:20px">"Aku beruntung bisa memilikimu di dalam hidupku. Tetap jadi diri kamu yang hangat ya..."</p>
+    
+    <!-- NOMOR WHATSAPP KAMU -->
+    <button class="btn-main btn-msg" onclick="sendWhatsApp('6282333801668')">💬 Kirim Pesan via WhatsApp</button>
+    <button class="btn-main btn-sub" onclick="launchConfetti()">🎉 Sebar Kembang Api Lagi</button>
+  </div>
+
+</div>
+
+<script>
+let currentStep = 1;
+const audio = document.getElementById('music');
+const audioBtn = document.getElementById('musicBtn');
+const birthdayVideo = document.getElementById('birthdayVideo');
+let micInitialized = false;
+
+function updateTracker(step) {
+  const dots = document.querySelectorAll('.step');
+  dots.forEach((dot, index) => {
+    dot.classList.toggle('active', index === step - 1);
+  });
+}
+
+function nav(targetStep) {
+  // Matikan video jika berpindah dari slide video
+  if(currentStep === 6 && birthdayVideo) {
+    birthdayVideo.pause();
+  }
+
+  document.getElementById(`s${currentStep}`).classList.remove('active');
+  currentStep = targetStep;
+  document.getElementById(`s${currentStep}`).classList.add('active');
+  updateTracker(currentStep);
+
+  // Otomatis pause lagu latar jika video di-play agar suaranya tidak bertabrakan
+  if(currentStep === 6 && birthdayVideo) {
+    birthdayVideo.onplay = () => {
+      if(!audio.paused) toggleAudio();
+    };
+  }
+}
+
+function startSurprise() {
+  toggleAudio(true);
+  launchConfetti();
+  if(!micInitialized) {
+    initMicDetection();
+    micInitialized = true;
+  }
+  nav(2);
+}
+
+function toggleAudio(forcePlay = false) {
+  if (audio.paused || forcePlay) {
+    audio.play().then(() => audioBtn.classList.add('playing')).catch(() => {});
+  } else {
+    audio.pause();
+    audioBtn.classList.remove('playing');
+  }
+}
+
+function checkQuiz(isRight) {
+  const label = document.getElementById('quizStatus');
+  if(isRight) {
+    label.textContent = "Jawabanmu 100% Tepat! 🥰";
+    setTimeout(() => nav(4), 1000);
+  } else {
+    label.textContent = "Tetot! Salah, pilih yang A dong 😉";
+  }
+}
+
+function extinguishCandle() {
+  const flame = document.getElementById('candleFlame');
+  const msg = document.getElementById('wishMsg');
+  const btn = document.getElementById('btnToFinal');
+  
+  if(!flame.classList.contains('out')) {
+    flame.classList.add('out');
+    msg.style.opacity = '1';
+    btn.style.display = 'inline-flex';
+    launchConfetti();
+  }
+}
+
+/* REAL BLOW DETECTION VIA MICROPHONE */
+function initMicDetection() {
+  if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    navigator.mediaDevices.getUserMedia({ audio: true })
+      .then(stream => {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const analyser = audioContext.createAnalyser();
+        const microphone = audioContext.createMediaStreamSource(stream);
+        const javascriptNode = audioContext.createScriptProcessor(2048, 1, 1);
+
+        analyser.smoothingTimeConstant = 0.8;
+        analyser.fftSize = 1024;
+
+        microphone.connect(analyser);
+        analyser.connect(javascriptNode);
+        javascriptNode.connect(audioContext.destination);
+
+        javascriptNode.onaudioprocess = function() {
+          const array = new Uint8Array(analyser.frequencyBinCount);
+          analyser.getByteFrequencyData(array);
+          let values = 0;
+          for (let i = 0; i < array.length; i++) {
+            values += array[i];
+          }
+          const average = values / array.length;
+          if (average > 40 && currentStep === 5) {
+            extinguishCandle();
+          }
+        };
+      })
+      .catch(err => {
+        console.log("Izin mikrofon tidak diberikan:", err);
+      });
+  }
+}
+
+/* FUNGSI KIRIM PESAN KE WHATSAPP */
+function sendWhatsApp(phone) {
+  const textMessage = "Makasih banyak ya sayang websitenya manis banget! Aku udah buka sampai akhir ❤️🥰";
+  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(textMessage)}`, '_blank');
+}
+
+/* CONFETTI ANIMATION */
+function launchConfetti() {
+  for (let i = 0; i < 70; i++) {
+    const p = document.createElement('div');
+    p.textContent = ['❤️', '✨', '💖', '🌸', '🎉', '💕', '👑'][Math.floor(Math.random() * 7)];
+    p.style.position = 'fixed';
+    p.style.left = Math.random() * 100 + 'vw';
+    p.style.top = '-20px';
+    p.style.fontSize = (14 + Math.random() * 18) + 'px';
+    p.style.zIndex = '100';
+    p.style.pointerEvents = 'none';
+    p.style.transition = `transform ${2.5 + Math.random() * 2.5}s cubic-bezier(0.25, 1, 0.5, 1), opacity ${2.5 + Math.random() * 2.5}s linear`;
+    document.body.appendChild(p);
+    
+    setTimeout(() => {
+      p.style.transform = `translateY(105vh) rotate(${Math.random() * 720}deg)`;
+      p.style.opacity = '0';
+    }, 50);
+
+    setTimeout(() => p.remove(), 5500);
+  }
+}
+
+/* BACKGROUND CANVAS BOKEH */
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let w, h, dots = [];
+
+function resize() {
+  w = canvas.width = window.innerWidth;
+  h = canvas.height = window.innerHeight;
+  dots = [];
+  for(let i = 0; i < 35; i++) {
+    dots.push({
+      x: Math.random() * w, y: Math.random() * h,
+      r: Math.random() * 3 + 1,
+      sx: (Math.random() - 0.5) * 0.4,
+      sy: -Math.random() * 0.5 - 0.1,
+      op: Math.random() * 0.5 + 0.2
+    });
+  }
+}
+
+function render() {
+  ctx.clearRect(0, 0, w, h);
+  dots.forEach(d => {
+    d.x += d.sx; d.y += d.sy;
+    if (d.y < 0) d.y = h;
+    if (d.x < 0 || d.x > w) d.sx *= -1;
+
+    ctx.beginPath();
+    ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255, 153, 194, ${d.op})`;
+    ctx.fill();
+  });
+  requestAnimationFrame(render);
+}
+
+window.addEventListener('resize', resize);
+resize(); render();
+</script>
+</body>
+</html>
