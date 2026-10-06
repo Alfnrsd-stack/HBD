@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Happy Birthday, My Princess ❤️</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'Plus Jakarta Sans',sans-serif;background:#080205;color:#fff}
+
+/* Premium Dynamic Background */
+.bg-layer{
+  position:fixed;inset:0;
+  background: radial-gradient(circle at 50% 20%, #4a0e2e 0%, #1a0410 50%, #080205 100%);
+  z-index: 1;
+}
+.bg-glow{
+  position:fixed;width:300px;height:300px;border-radius:50%;
+  background:radial-gradient(circle, rgba(255, 77, 141, 0.25) 0%, transparent 70%);
+  filter:blur(40px);z-index:2;pointer-events:none;
+  animation: floatGlow 10s ease-infinite alternate;
+}
+@keyframes floatGlow{0%{transform:translate(-20%, -20%)}100%{transform:translate(80%, 80%)}}
+
+#canvas{position:fixed;inset:0;z-index:3;pointer-events:none}
+
+/* Layout Container */
+.app-shell{position:relative;z-index:4;width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:20px}
+
+/* Ultra Glass Card */
+.card{
+  position:absolute;width:min(100%, 410px);max-height:88vh;padding:32px 26px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+  border-radius: 36px; text-align: center;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+  opacity:0; transform: scale(0.88) translateY(30px); pointer-events:none;
+  transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow-y: auto; scrollbar-width: none;
+}
+.card::-webkit-scrollbar{display:none}
+.card.active{opacity:1; transform: scale(1) translateY(0); pointer-events:all}
+
+/* Progress Tracker */
+.tracker{position:absolute;top:20px;left:0;right:0;display:flex;justify-content:center;gap:6px;z-index:10}
+.step{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.2);transition:0.5s cubic-bezier(0.16, 1, 0.3, 1)}
+.step.active{background:#ff3377;width:22px;border-radius:10px;box-shadow:0 0 12px #ff3377}
+
+/* Typography & Badges */
+.tag{
+  display:inline-block;padding:6px 14px;border-radius:30px;
+  background:rgba(255, 51, 119, 0.15);border:1px solid rgba(255, 51, 119, 0.3);
+  color:#ff77a8;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;
+}
+h1{font-size:28px;font-weight:800;line-height:1.2;margin-bottom:10px;background:linear-gradient(135deg, #fff 30%, #ffb3d1);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+p{font-size:14px;line-height:1.7;color:#e2c5d3;font-weight:400;margin-bottom:16px}
+.handwrite{font-family:'Caveat',cursive;font-size:24px;color:#ff99c2;line-height:1.3}
+
+/* ELEGAN BORN DAY & COORDINATES BADGE STYLES */
+.born-meta-box {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 14px 18px;
+  margin: 12px 0 20px 0;
+  text-align: left;
+}
+.born-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.born-label {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.born-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: #ff99c2;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* Primary Button */
+.btn-main{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  width:100%;padding:16px 24px;border:none;border-radius:20px;
+  background: linear-gradient(135deg, #ff3377, #ff6699);
+  color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:15px;
+  box-shadow:0 12px 30px rgba(255, 51, 119, 0.4);cursor:pointer;
+  transition:all 0.3s cubic-bezier(0.16, 1, 0.3, 1);margin-top:8px;
+}
+.btn-main:active{transform:scale(0.96);box-shadow:0 6px 15px rgba(255, 51, 119, 0.3)}
+.btn-msg{background:linear-gradient(135deg, #25D366, #128C7E);box-shadow:0 12px 30px rgba(37, 211, 102, 0.3)}
+.btn-sub{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);box-shadow:none;margin-top:10px}
+
+/* Music Floating Badge */
+.music-toggle{
+  position:fixed;top:24px;right:24px;z-index:20;width:46px;height:46px;
+  border-radius:50%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.18);
+  color:#fff;font-size:18px;display:flex;align-items:center;justify-content:center;
+  backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);cursor:pointer;transition:0.3s;box-shadow:0 8px 20px rgba(0,0,0,0.3);
+}
+.music-toggle.playing{animation:spin 5s linear infinite;border-color:#ff3377;color:#ff3377}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* GIFT BOX ANIMATION */
+.gift-box-wrap{margin:15px 0;cursor:pointer;perspective:1000px}
+.gift-icon{
+  font-size:85px;display:inline-block;filter:drop-shadow(0 15px 25px rgba(255, 51, 119, 0.5));
+  animation:giftShake 2s infinite cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+@keyframes giftShake{
+  0%,100%{transform:rotate(0deg) scale(1)}
+  15%{transform:rotate(-6deg) scale(1.05)}
+  30%{transform:rotate(6deg) scale(1.05)}
+  45%{transform:rotate(-3deg) scale(1.05)}
+}
+
+/* POLAROID GALLERY */
+.polaroid-frame{
+  background:#fff;padding:12px 12px 25px 12px;border-radius:12px;
+  box-shadow:0 20px 40px rgba(0,0,0,0.6);transform:rotate(-2deg);margin:15px auto;
+  width:100%;max-width:280px;position:relative;transition:0.4s;
+}
+.polaroid-frame:nth-child(even){transform:rotate(3deg)}
+.polaroid-img{width:100%;height:230px;object-fit:cover;border-radius:6px;background:#1a0812}
+.polaroid-caption{color:#333;font-family:'Caveat',cursive;font-size:22px;margin-top:10px;font-weight:700}
+.polaroid-tape{
+  position:absolute;top:-10px;left:50%;transform:translateX(-50%);
+  width:70px;height:20px;background:rgba(255,255,255,0.5);
+  backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);border:1px dashed rgba(0,0,0,0.1);
+}
+
+/* VIDEO STYLES */
+.video-wrap{
+  width:100%;border-radius:18px;overflow:hidden;margin:15px 0;
+  border:1px solid rgba(255,255,255,0.15);box-shadow:0 15px 35px rgba(0,0,0,0.5);
+  background:#000;
+}
+.video-wrap video{width:100%;height:auto;max-height:280px;display:block;border-radius:18px}
+
+/* INTERACTIVE CAKE & FLAME */
+.cake-stage{position:relative;width:140px;height:140px;margin:20px auto;cursor:pointer}
+.cake-emoji{font-size:100px;position:absolute;bottom:0;left:50%;transform:translateX(-50%)}
+.flame-element{
+  position:absolute;top:-5px;left:50%;transform:translateX(-50%);
+  font-size:32px;filter:drop-shadow(0 0 10px #ff9900);
+  animation:candleBurn 0.4s infinite alternate;transition:all 0.6s ease;
+}
+@keyframes candleBurn{0%{transform:translateX(-50%) scale(0.9) rotate(-2deg)}100%{transform:translateX(-50%) scale(1.1) rotate(2deg)}}
+.flame-element.out{opacity:0;transform:translateX(-50%) translateY(-25px) scale(0)}
+
+/* MIC DETECTOR BADGE */
+.mic-badge{
+  display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:20px;
+  background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);
+  font-size:11px;color:#ff99c2;margin-top:10px;
+}
+.mic-dot{width:8px;height:8px;border-radius:50%;background:#ff3377;animation:blink 1s infinite}
+@keyframes blink{50%{opacity:0.3}}
+
+/* QUIZ STYLES */
+.quiz-grid{display:flex;flex-direction:column;gap:12px;margin:15px 0}
+.quiz-btn{
+  padding:16px 20px;border-radius:18px;background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.12);color:#fff;text-align:left;
+  font-size:14px;font-weight:500;cursor:pointer;transition:0.3s;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.quiz-btn:active{background:rgba(255, 51, 119, 0.2);border-color:#ff3377}
+
+/* DESTINASI STYLES */
+.destinasi-grid{display:flex;flex-direction:column;gap:10px;margin:15px 0;text-align:left}
+.card-destinasi{display:block;cursor:pointer;position:relative}
+.card-destinasi input[type="radio"]{position:absolute;opacity:0}
+.card-content{
+  background:rgba(255, 255, 255, 0.05);
+  border:1px solid rgba(255, 255, 255, 0.12);
+  border-radius:16px;padding:12px 16px;
+  transition:all 0.3s ease;
+}
+.card-content h3{font-size:14px;color:#fff;margin-bottom:2px;font-weight:700}
+.card-content p{font-size:11px;color:#e2c5d3;margin-bottom:0;line-height:1.3}
+.card-content .icon{float:right;font-size:1.4em;margin-top:-2px}
+.card-destinasi input[type="radio"]:checked + .card-content{
+  border-color:#ff3377;
+  background:rgba(255, 51, 119, 0.2);
+  box-shadow:0 0 15px rgba(255, 51, 119, 0.3);
+  transform:scale(1.02);
+}
+</style>
+</head>
+<body>
+
+<div class="bg-layer"></div>
+<div class="bg-glow"></div>
+<canvas id="canvas"></canvas>
+
+<!-- MUSIK BACKGROUND -->
+<audio id="music" loop preload="auto">
+  <source src="MusikM.mp3" type="audio/mpeg">
+</audio>
+
+<button class="music-toggle" id="musicBtn" onclick="toggleAudio()">🎵</button>
+
+<div class="app-shell">
+
+  <!-- TRACKER STEPS (8 SLIDE) -->
+  <div class="tracker">
+    <div class="step active"></div>
+    <div class="step"></div>
+    <div class="step"></div>
+    <div class="step"></div>
+    <div class="step"></div>
+    <div class="step"></div>
+    <div class="step"></div>
+    <div class="step"></div>
+  </div>
+
+  <!-- SLIDE 1: GIFT OPENING -->
+  <div class="card active" id="s1">
+    <div class="tag">Ada Paket Nih 📦</div>
+    
+    <h1>Her Special Day!</h1>
+    <p>Ada kejutan kecil yang khusus aku buatin buat ngerayain hari ulang tahunmu.</p>
+    
+    <div class="gift-box-wrap" onclick="startSurprise()">
+      <div class="gift-icon">🎁</div>
+    </div>
+    <p style="font-size:12px;opacity:0.6">Pencet kadonya buat buka ya ✨</p>
+  </div>
+
+  <!-- SLIDE 2: WELCOME -->
+  <div class="card" id="s2">
+    <div class="tag">Happy Birthday</div>
+    <h1>Hai, <span style="color:#ff6699">Sayang!</span> ❤️</h1>
+
+    <!-- KOTAK BORN DAY & COORDINATES -->
+    <div class="born-meta-box">
+      <div class="born-row">
+        <span class="born-label">BORN DAY</span>
+        <span class="born-val">29 OCT 2026</span>
+      </div>
+      <div class="born-row">
+        <span class="born-label">CHAPTER</span>
+        <span class="born-val">22nd EDITION</span>
+      </div>
+      <div class="born-row" style="border-top:1px dashed rgba(255,255,255,0.1);padding-top:6px;margin-top:2px;">
+        <span class="born-label">COORDINATES</span>
+        <span class="born-val" style="font-size:11px;color:#e2c5d3;">7.0000° S, 29.000° E</span>
+      </div>
+    </div>
+
+    <p class="handwrite">"Gak kerasa ya udah nambah umur lagi. Makasih banyak ya udah hadir dan bikin hari-hariku jadi jauh lebih berwarna. Selamat ulang tahun sayangku!"</p>
+    <p>Sebelum lanjut, tiup lilinnya dulu yuk...</p>
+    <button class="btn-main" onclick="nav(3)">Lanjut ke Lilin 🎂</button>
+  </div>
+
+  <!-- SLIDE 3: CANDLE BLOW -->
+  <div class="card" id="s3">
+    <div class="tag">Make A Wish 🕯️</div>
+    <h2 style="font-size:22px">Saatnya Tiup Lilin!</h2>
+    <p>Merem sebentar, panjatkan doa terbaik kamu,semoga doa mu terkabul hari ini aaminn:</p>
+    
+    <div class="cake-stage" onclick="extinguishCandle()">
+      <div class="flame-element" id="candleFlame">🔥</div>
+      <div class="cake-emoji">🎂</div>
+    </div>
+
+    <div class="mic-badge" id="micStatus">
+      <div class="mic-dot"></div> Fitur tiup mic aktif (klik kuenya)
+    </div>
+
+    <p id="wishMsg" style="opacity:0;transition:0.5s;color:#ff6699;font-weight:700;margin-top:15px">Semoga semua harapanmu terkabul ya! ✨</p>
+    <button class="btn-main" id="btnToFinal" style="display:none;" onclick="nav(4)">Lihat Foto Momen 📸</button>
+  </div>
+
+  <!-- SLIDE 4: POLAROID GALLERY -->
+  <div class="card" id="s4">
+    <div class="tag">Sweet Memories 📸</div>
+    <div class="polaroid-frame">
+      <div class="polaroid-tape"></div>
+      <img class="polaroid-img" src="IMG-02.jpg" alt="Foto">
+      <div class="polaroid-caption">Senyum Favoritku ❤️</div>
+    </div>
+    <p class="handwrite">"Senyuman kamu tuh selalu jadi hal favorit yang gak pernah bosen aku lihat."</p>
+    <button class="btn-main" onclick="nav(5)">Kita Kuis Dulu 👑</button>
+  </div>
+
+  <!-- SLIDE 5: INTERACTIVE QUIZ -->
+  <div class="card" id="s5">
+    <div class="tag">Kuis orang</div>
+    <h2 style="font-size:20px;margin-bottom:12px">Siapa orang paling cantik & berharga hari ini? 👑</h2>
+    <div class="quiz-grid">
+      <div class="quiz-btn" onclick="checkQuiz(true)"><span>A. Titan Salvaura Ramadani</span> <span>🥰</span></div>
+      <div class="quiz-btn" onclick="checkQuiz(false)"><span>B. Aisyah Zahra</span> <span>😜</span></div>
+      <div class="quiz-btn" onclick="checkQuiz(false)"><span>C. Aurelia</span> <span>🐱</span></div>
+    </div>
+    <p id="quizStatus" style="min-height:20px;font-weight:600;color:#ff6699"></p>
+  </div>
+
+  <!-- SLIDE 6: SPECIAL VIDEO SLIDE -->
+  <div class="card" id="s6">
+    <div class="tag">Special Video 🎬</div>
+    <h2 style="font-size:22px">Video Singkat Buat Kamu</h2>
+    <p>Ada kenangan manis yang sengaja aku simpan dan jadiin video buat hari bahagiamu ini.</p>
+    
+    <div class="video-wrap">
+      <video id="birthdayVideo" controls playsinline poster="">
+        <source src="VID_1.mp4" type="video/mp4">
+        Browser kamu gak mendukung pemutaran video.
+      </video>
+    </div>
+
+    <p class="handwrite">"Tiap momen bareng kamu itu selalu berharga banget buat aku."</p>
+    <button class="btn-main" onclick="nav(7)">Buka Suratnya 💌</button>
+  </div>
+
+  <!-- SLIDE 7: SURAT PESAN -->
+  <div class="card" id="s7">
+    <div style="font-size:55px;margin-bottom:10px">💖</div>
+    <div class="tag">Happy Birthday!</div>
+    <h1>Buat Kamu yang Paling Spesial</h1>
+    <p>Selamat ulang tahun ya, sayang! Semoga di umur kamu yang baru ini, segalanya makin dimudahkan, sehat terus, dan bahagia selalu menyertai hari-harimu.</p>
+    <p class="handwrite" style="margin-bottom:20px">"Aku seneng banget bisa ada di samping kamu. Tetap jadi diri kamu yang hangat ya..."</p>
+    
+    <button class="btn-main" onclick="nav(8)">Pilih Liburan KITA 🧳➔</button>
+  </div>
+
+  <!-- SLIDE 8: DESTINASI LIBURAN / NEXT TRIP -->
+  <div class="card" id="s8">
+    <div class="tag">Next Trip 🧳</div>
+    <h2 style="font-size:22px">Bulan Depan Mau Jalan Ke Mana? ✨</h2>
+    <p>Pilih salah satu tempat yang paling kamu pengen buat liburan kita nanti ya!</p>
+
+    <div class="destinasi-grid">
+      <label class="card-destinasi">
+        <input type="radio" name="destinasi" value="Gunung Bromo">
+        <div class="card-content">
+          <span class="icon">🌋</span>
+          <h3>Bromo</h3>
+          <p>Liat sunrise & jalan-jalan di lautan pasir!</p>
+        </div>
+      </label>
+
+      <label class="card-destinasi">
+        <input type="radio" name="destinasi" value="Gili Labak">
+        <div class="card-content">
+          <span class="icon">🏝️</span>
+          <h3>Gili Labak</h3>
+          <p>Main pasir putih & nyantai liat laut jernih.</p>
+        </div>
+      </label>
+
+      <label class="card-destinasi">
+        <input type="radio" name="destinasi" value="Karang Bolong Pacitan">
+        <div class="card-content">
+          <span class="icon">🌊</span>
+          <h3>Karang Bolong Pacitan</h3>
+          <p>Tebing keren & pemandangan laut yang estetik.</p>
+        </div>
+      </label>
+
+      <label class="card-destinasi">
+        <input type="radio" name="destinasi" value="Kawah Ijen">
+        <div class="card-content">
+          <span class="icon">✨</span>
+          <h3>Kawah Ijen</h3>
+          <p>Pengalaman seru liat Blue Fire bareng-bareng.</p>
+        </div>
+      </label>
+
+      <label class="card-destinasi">
+        <input type="radio" name="destinasi" value="Pantai Malang Selatan">
+        <div class="card-content">
+          <span class="icon">🏖️</span>
+          <h3>Pantai Malang Selatan</h3>
+          <p>Jalan-jalan santai sambil nemenin sunset.</p>
+        </div>
+      </label>
+    </div>
+
+    <button class="btn-main btn-msg" onclick="kirimPilihanWA('6282333801668')">Pilih & Kirim ke WA 💌</button>
+    <button class="btn-main btn-sub" onclick="launchConfetti()">🎉 Mainkan Kembang Api Lagi</button>
+  </div>
+
+</div>
+
+<script>
+let currentStep = 1;
+const audio = document.getElementById('music');
+const audioBtn = document.getElementById('musicBtn');
+const birthdayVideo = document.getElementById('birthdayVideo');
+let micInitialized = false;
+
+function updateTracker(step) {
+  const dots = document.querySelectorAll('.step');
+  dots.forEach((dot, index) => {
+    dot.classList.toggle('active', index === step - 1);
+  });
+}
+
+function nav(targetStep) {
+  if(currentStep === 6 && birthdayVideo) {
+    birthdayVideo.pause();
+  }
+
+  document.getElementById(`s${currentStep}`).classList.remove('active');
+  currentStep = targetStep;
+  document.getElementById(`s${currentStep}`).classList.add('active');
+  updateTracker(currentStep);
+
+  if(currentStep === 6 && birthdayVideo) {
+    birthdayVideo.onplay = () => {
+      if(!audio.paused) toggleAudio();
+    };
+  }
+}
+
+function startSurprise() {
+  toggleAudio(true);
+  launchConfetti();
+  if(!micInitialized) {
+    initMicDetection();
+    micInitialized = true;
+  }
+  nav(2);
+}
+
+function toggleAudio(forcePlay = false) {
+  if (audio.paused || forcePlay) {
+    audio.play().then(() => audioBtn.classList.add('playing')).catch(() => {});
+  } else {
+    audio.pause();
+    audioBtn.classList.remove('playing');
+  }
+}
+
+function checkQuiz(isRight) {
+  const label = document.getElementById('quizStatus');
+  if(isRight) {
+    label.textContent = "Jawabanmu 100% Tepat! 🥰";
+    setTimeout(() => nav(6), 1000);
+  } else {
+    label.textContent = "Tetot! Salah, pilih yang A dong 😉";
+  }
+}
+
+function extinguishCandle() {
+  const flame = document.getElementById('candleFlame');
+  const msg = document.getElementById('wishMsg');
+  const btn = document.getElementById('btnToFinal');
+  
+  if(!flame.classList.contains('out')) {
+    flame.classList.add('out');
+    msg.style.opacity = '1';
+    btn.style.display = 'inline-flex';
+    launchConfetti();
+  }
+}
+
+function kirimPilihanWA(phone) {
+  const pilihan = document.querySelector('input[name="destinasi"]:checked');
+
+  if (!pilihan) {
+    alert("Pilih salah satu tempat impianmu dulu ya, Sayang! 😉");
+    return;
+  }
+
+  const pesan = `Halo Sayang! 💖 Aku udah pilih liburan buat bulan depan. Aku mau kita pergi ke: *${pilihan.value}*! 🗺️✨`;
+  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(pesan)}`, '_blank');
+}
+
+function initMicDetection() {
+  if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    navigator.mediaDevices.getUserMedia({ audio: true })
+      .then(stream => {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const analyser = audioContext.createAnalyser();
+        const microphone = audioContext.createMediaStreamSource(stream);
+        const javascriptNode = audioContext.createScriptProcessor(2048, 1, 1);
+
+        analyser.smoothingTimeConstant = 0.8;
+        analyser.fftSize = 1024;
+
+        microphone.connect(analyser);
+        analyser.connect(javascriptNode);
+        javascriptNode.connect(audioContext.destination);
+
+        javascriptNode.onaudioprocess = function() {
+          const array = new Uint8Array(analyser.frequencyBinCount);
+          analyser.getByteFrequencyData(array);
+          let values = 0;
+          for (let i = 0; i < array.length; i++) {
+            values += array[i];
+          }
+          const average = values / array.length;
+          if (average > 40 && currentStep === 3) {
+            extinguishCandle();
+          }
+        };
+      })
+      .catch(err => {
+        console.log("Izin mikrofon tidak diberikan:", err);
+      });
+  }
+}
+
+function launchConfetti() {
+  for (let i = 0; i < 70; i++) {
+    const p = document.createElement('div');
+    p.textContent = ['❤️', '✨', '💖', '🌸', '🎉', '💕', '👑'][Math.floor(Math.random() * 7)];
+    p.style.position = 'fixed';
+    p.style.left = Math.random() * 100 + 'vw';
+    p.style.top = '-20px';
+    p.style.fontSize = (14 + Math.random() * 18) + 'px';
+    p.style.zIndex = '100';
+    p.style.pointerEvents = 'none';
+    p.style.transition = `transform ${2.5 + Math.random() * 2.5}s cubic-bezier(0.25, 1, 0.5, 1), opacity ${2.5 + Math.random() * 2.5}s linear`;
+    document.body.appendChild(p);
+    
+    setTimeout(() => {
+      p.style.transform = `translateY(105vh) rotate(${Math.random() * 720}deg)`;
+      p.style.opacity = '0';
+    }, 50);
+
+    setTimeout(() => p.remove(), 5500);
+  }
+}
+
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let w, h, dots = [];
+
+function resize() {
+  w = canvas.width = window.innerWidth;
+  h = canvas.height = window.innerHeight;
+  dots = [];
+  for(let i = 0; i < 35; i++) {
+    dots.push({
+      x: Math.random() * w, y: Math.random() * h,
+      r: Math.random() * 3 + 1,
+      sx: (Math.random() - 0.5) * 0.4,
+      sy: -Math.random() * 0.5 - 0.1,
+      op: Math.random() * 0.5 + 0.2
+    });
+  }
+}
+
+function render() {
+  ctx.clearRect(0, 0, w, h);
+  dots.forEach(d => {
+    d.x += d.sx; d.y += d.sy;
+    if (d.y < 0) d.y = h;
+    if (d.x < 0 || d.x > w) d.sx *= -1;
+
+    ctx.beginPath();
+    ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255, 153, 194, ${d.op})`;
+    ctx.fill();
+  });
+  requestAnimationFrame(render);
+}
+
+window.addEventListener('resize', resize);
+resize(); render();
+</script>
+</body>
+</html>
